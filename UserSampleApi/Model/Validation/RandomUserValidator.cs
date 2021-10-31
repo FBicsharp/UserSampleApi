@@ -67,7 +67,7 @@ namespace UserSampleApi.Model.Validation
         /// Check Result properties values
         /// </summary>
         /// <param name="rndUser"></param>
-        /// <returns>if the Result has valid data for compose the User </returns>
+        /// <returns>User list</returns>
         IEnumerable<User> GetValidUsers(IEnumerable<Result> rndUsers);
     }
 
