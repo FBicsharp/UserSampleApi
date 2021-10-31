@@ -37,7 +37,7 @@ namespace UserSampleApi.Controllers
             _logger = logger;
             _httpClient = httpClient;
             _randomUserValidator = randomUserValidator;
-            _configuration = Configuration;
+            _configuration = Configuration;            
         }
 
 

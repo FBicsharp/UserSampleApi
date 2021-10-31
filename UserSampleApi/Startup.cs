@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UserSampleApi.Model;
 using UserSampleApi.Model.Validation;
+using UserSampleApi.Middleware;
 
 namespace UserSampleApi
 {
@@ -50,16 +51,19 @@ namespace UserSampleApi
                     options.WithOrigins(coreSection)
                     .AllowAnyMethod()
                     .AllowAnyHeader()                
-                );            
-
+                );
             }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+           
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserSampleApi v1"));
-            app.UseHttpsRedirection();
+
+            app.ConfigureExceptionHandler();
+            app.UseHttpsRedirection();            
+            
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
