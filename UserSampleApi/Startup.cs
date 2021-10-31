@@ -32,38 +32,36 @@ namespace UserSampleApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserSampleApi", Version = "v1" });
-                
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserSampleApi", Version = "v1" });                
             });
-
-            services.AddHttpClient("UsersApi");
             services.AddCors();
+            services.AddHttpClient("UsersApi");
             services.AddScoped<IRandomUserValidator, RandomUserValidator>();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory logger)
         {
-            app.UseCors(options =>//allowing all call for angular application            
-                options.WithOrigins("http://localhost:4200")
-                .AllowAnyMethod()
-                .AllowAnyHeader()                
-            );            
+            logger.AddLog4Net("logconfig.xml");
+            var coreSection = Configuration.GetSection("CORS_url").Get<string[]>();
+            if (coreSection.Count()>0)
+            {
+                app.UseCors(options =>//allowing all call for angular application
+                    options.WithOrigins(coreSection)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()                
+                );            
+
+            }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserSampleApi v1"));
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserSampleApi v1"));
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

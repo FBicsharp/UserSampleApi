@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using System;
@@ -21,17 +22,22 @@ namespace UserSampleApi.Controllers
 
         private readonly ILogger<UsersController> _logger;
         private readonly IRandomUserValidator _randomUserValidator;
+        private readonly IConfiguration _configuration;
         private IHttpClientFactory _httpClient;
         private uint _numberOfUser = 50;
-        private string _randomUserApiUrl = "https://randomuser.me/api/?results={0}&inc=name,dob,id";
+        private string _randomUserApiFilter = "?results={0}&inc=name,dob,id";
+        private string _randomUserApiUrl ;
 
 
-     
-        public UsersController(ILogger<UsersController> logger, IHttpClientFactory httpClient, IRandomUserValidator randomUserValidator)
+        public UsersController(ILogger<UsersController> logger, 
+            IHttpClientFactory httpClient, 
+            IRandomUserValidator randomUserValidator,
+            IConfiguration Configuration)
         {
             _logger = logger;
             _httpClient = httpClient;
             _randomUserValidator = randomUserValidator;
+            _configuration = Configuration;
         }
 
 
@@ -41,7 +47,8 @@ namespace UserSampleApi.Controllers
         {
             _logger.LogInformation($"Calling api{this.ControllerContext.RouteData.Values["controller"].ToString()}\\{this.ControllerContext.RouteData.Values["action"].ToString()} ");
             _numberOfUser = NumberOfUsers != 10 ? NumberOfUsers : _numberOfUser;
-            _randomUserApiUrl = string.Format(_randomUserApiUrl, _numberOfUser);
+            _randomUserApiUrl = _configuration["RandomuserUrl"];
+            _randomUserApiUrl += string.Format(_randomUserApiFilter, _numberOfUser);
             if (!Uri.IsWellFormedUriString(_randomUserApiUrl, UriKind.Absolute))//validating url format
             {
                 _logger.LogError("MissingApiUrl");
@@ -55,7 +62,7 @@ namespace UserSampleApi.Controllers
         [NonAction]
         private async Task<IActionResult> GetUsersFromRandomuser()
         {
-            var userList = new List<User>();
+            var userList = new List<User>();            
             try
             {
                 var client =  _httpClient.CreateClient("UsersApi");
