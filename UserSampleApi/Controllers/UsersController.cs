@@ -15,11 +15,11 @@ namespace UserSampleApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
 
 
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<UsersController> _logger;
         private readonly IRandomUserValidator _randomUserValidator;
         private IHttpClientFactory _httpClient;
         private uint _numberOfUser = 50;
@@ -27,7 +27,7 @@ namespace UserSampleApi.Controllers
 
 
      
-        public UserController(ILogger<UserController> logger, IHttpClientFactory httpClient, IRandomUserValidator randomUserValidator)
+        public UsersController(ILogger<UsersController> logger, IHttpClientFactory httpClient, IRandomUserValidator randomUserValidator)
         {
             _logger = logger;
             _httpClient = httpClient;
@@ -47,13 +47,13 @@ namespace UserSampleApi.Controllers
                 _logger.LogError("MissingApiUrl");
                 return Problem("Api is not available at momet");
             }
-            return  await GetUsersFromRandomUser();
+            return  await GetUsersFromRandomuser();
             
         }
 
 
         [NonAction]
-        private async Task<IActionResult> GetUsersFromRandomUser()
+        private async Task<IActionResult> GetUsersFromRandomuser()
         {
             var userList = new List<User>();
             try
