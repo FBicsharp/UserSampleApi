@@ -41,7 +41,32 @@ namespace UserSampleApi.Controllers
         }
 
 
-
+        /// <summary>
+        /// Gets the list of all Users.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        /// GET api/GetUsers
+        ///     { 
+        ///     
+        ///         "id": 690780483,
+        ///         "name": "Ben",
+        ///         "surname": "Hicks",
+        ///         "birthdate": "1945-08-18T18:10:35.164Z"
+        ///     }
+        /// </remarks>
+        /// <param name="NumberOfUsers">Number of users you want to receive</param>
+        /// <returns>The list of Users.</returns>
+        /// <response code="200">Returns the list of Users</response>
+        /// <response code="204">If there is not Users</response>     
+        /// <response code="500">Internal error</response>     
+        // GET: api/GetUsers
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        [Produces("application/json")]
         [HttpGet]
         public async Task<IActionResult> GetUsers(uint NumberOfUsers = 50)
         {

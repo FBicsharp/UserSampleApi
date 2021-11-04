@@ -1,17 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using UserSampleApi.Model;
 using UserSampleApi.Model.Validation;
 using UserSampleApi.Middleware;
 
@@ -33,7 +27,10 @@ namespace UserSampleApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserSampleApi", Version = "v1" });                
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserSampleApi", Version = "v1" });
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             services.AddCors();
             services.AddHttpClient("UsersApi");
@@ -47,7 +44,7 @@ namespace UserSampleApi
             var coreSection = Configuration.GetSection("CORS_url").Get<string[]>();
             if (coreSection.Count()>0)
             {
-                app.UseCors(options =>//allowing all call for angular application
+                app.UseCors(options =>
                     options.WithOrigins(coreSection)
                     .AllowAnyMethod()
                     .AllowAnyHeader()                

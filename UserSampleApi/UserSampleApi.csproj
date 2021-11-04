@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>	  
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\TEST-PRJ\Progetti\Personale\UserSample\UserSampleApi\UserSampleApi\UserSampleApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
