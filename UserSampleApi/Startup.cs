@@ -30,7 +30,10 @@ namespace UserSampleApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UsersSampleApi", Version = "v1" });
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                if (System.IO.File.Exists(xmlPath))
+                {
+                    c.IncludeXmlComments(xmlPath);
+                }
             });
             services.AddCors();
             services.AddHttpClient("UsersApi");
