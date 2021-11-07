@@ -8,6 +8,11 @@
     <DocumentationFile>D:\TEST-PRJ\Progetti\Personale\UserSample\UserSampleApi\UserSampleApi\UserSampleApi.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\TEST-PRJ\Progetti\Personale\UserSample\UserSampleApi\UserSampleApi\UserSampleApi.xml</DocumentationFile>
+    <OutputPath>bin\Release\net5.0\publish\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="5.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
